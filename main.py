@@ -40,20 +40,22 @@ if __name__ == '__main__':
     font = pygame.font.SysFont('Comic Sans MS', font_size) # font for the title
     font2 = pygame.font.SysFont('Comic Sans MS', round(30*size)) # font for the title
 
-    button_size_x = 300 * size
-    button_size_y = 100 * size
-    button_distance = 20 * size
+    button_size_x = 400 * size
+    button_size_y = 150 * size
+    button_distance = 460 * size
 
     # constants and colours
 
     # variables, dictionaries and lists
-    question = 2
-    question_dictionary = {1: ["what is 1+1", "2", "window", "11"], #question dictionary holds all the questions and answer
-                           2: ["5 + b = 12,  what is the value of b", "7", "2", "5"]
-
-
-
-
+    question = 1
+    question_dictionary = {1: ["what is 1+1", "2", "window", "11", "IDK"], #question dictionary holds all the questions and answer
+                           2: ["5 + b = 12,  what is the value of b", "7", "2", "5", "what?"],
+                           3: ["10 x 4 = 40", "True", "False"],
+                           4: ["10 x 4 = 40", "True", "False"],
+                           5: ["10 x 4 = 40", "True", "False"],
+                           6: ["10 x 4 = 40", "True", "False"],
+                           7: ["10 x 4 = 40", "True", "False"],
+                           8: ["10 x 4 = 40", "True", "False"]
 
                            }
 
@@ -73,14 +75,25 @@ if __name__ == '__main__':
             else:
                 self.colour = (255, 255, 255)
         def display(self):
-            pygame.draw.rect(screen, self.colour, pygame.Rect(self.x, self.y, button_size_x, button_size_y))
+            pygame.draw.rect(screen, self.colour, pygame.Rect(self.x, self.y, button_size_x, button_size_y)) #draws button onto the screen
 
-            text = font2.render(self.text, False, (0, 0, 0))
-            screen.blit(text, (self.x+button_size_x/2, self.y+button_size_y/2))
+
+            text = font2.render(self.text, False, (0, 0, 0)) #sets up text surface
+            text_width = text.get_width()  # gets text width
+            text_height = text.get_height()
+            screen.blit(text, (self.x+button_size_x/2-text_width/2, self.y+button_size_y/2-text_width/4)) #displays text surface perfectly centred using the text width
+
+    def check_mouse_inputs(x, y):
+
+        for button in buttons:
+            if button.x+button_size_x > x and button.x < x and button.y+button_size_y > y and button.y < y: #clicking on the button
+                print(button.text)
+
 
 
     def ask_question(background, question_number):
-
+        global buttons
+        buttons = []
         # screen.blit(background)
         if background == "None":
             screen.fill((0, 0, 255))
@@ -96,8 +109,29 @@ if __name__ == '__main__':
         screen.blit(question_title, ((width / 2) - (text_width / 2), 40 * size)) #displays the question in the middle of the screen
 
         #render buttons
-        b1 = button(20*size, height-300*size, answer)
-        b1.display()
+        #print(len(question_dictionary.get(question_number)))
+        if len(question_dictionary.get(question_number)) == 3:  #number of given answers = 2 (true/false question)
+            b1 = button(20*size, height-330*size, answer)
+            b2 = button(20*size+button_distance, height-330*size, question_dictionary.get(question_number)[2])
+            b1.display()
+            b2.display()
+        if len(question_dictionary.get(question_number)) == 5:
+
+            b1 = button(20 * size, height - 330 * size, question_dictionary.get(question_number)[1])
+            b2 = button(20 * size + button_distance, height - 330 * size, question_dictionary.get(question_number)[2])
+            b3 = button(20 * size, height - 160 * size, question_dictionary.get(question_number)[3])
+            b4 = button(20 * size + button_distance, height - 160 * size, question_dictionary.get(question_number)[4])
+
+            b1.display()
+            b2.display()
+            b3.display()
+            b4.display()
+
+            buttons.append(b1)
+            buttons.append(b2)
+            buttons.append(b3)
+            buttons.append(b4)
+
 
 
 
@@ -109,6 +143,9 @@ if __name__ == '__main__':
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                check_mouse_inputs(x, y)
 
         # Update.
         ask_question("None", question)

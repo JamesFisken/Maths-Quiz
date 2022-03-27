@@ -47,10 +47,10 @@ if __name__ == '__main__':
     # constants and colours
 
     # variables, dictionaries and lists
-    question = 1
-    question_dictionary = {1: ["what is 1+1", "2", "window", "11", "IDK"], #question dictionary holds all the questions and answer
-                           2: ["5 + b = 12,  what is the value of b", "7", "2", "5", "what?"],
-                           3: ["10 x 4 = 40", "True", "False"],
+    question = 3
+    question_dictionary = {1: ["what is 1+1", "2", "window", "11", "IDK", "2"], #question dictionary holds all the questions and answer
+                           2: ["5 + b = 12,  what is the value of b", "7", "2", "5", "what?", "7"],
+                           3: ["10 x 4 = 40", "True", "False", "True"],
                            4: ["10 x 4 = 40", "True", "False"],
                            5: ["10 x 4 = 40", "True", "False"],
                            6: ["10 x 4 = 40", "True", "False"],
@@ -87,8 +87,14 @@ if __name__ == '__main__':
 
         for button in buttons:
             if button.x+button_size_x > x and button.x < x and button.y+button_size_y > y and button.y < y: #clicking on the button
-                print(button.text)
+                if button.correct: #if the button has the attribute "Correct = True" has been clicked then the user has inputted the right answer
+                    #return True
+                    print("correct")
+                else:
+                    #return False
+                    print("wrong")
 
+    def randomise_question(question):
 
 
     def ask_question(background, question_number):
@@ -110,13 +116,19 @@ if __name__ == '__main__':
 
         #render buttons
         #print(len(question_dictionary.get(question_number)))
-        if len(question_dictionary.get(question_number)) == 3:  #number of given answers = 2 (true/false question)
-            b1 = button(20*size, height-330*size, answer)
-            b2 = button(20*size+button_distance, height-330*size, question_dictionary.get(question_number)[2])
+        if len(question_dictionary.get(question_number)) == 4:  #number of given answers = 2 (true/false question)
+
+            b1 = button(20*size, height-270*size, question_dictionary.get(question_number)[1]) #button1
+            b2 = button(20*size+button_distance, height-270*size, question_dictionary.get(question_number)[2]) #button2
+
+            #display buttons
             b1.display()
             b2.display()
-        if len(question_dictionary.get(question_number)) == 5:
 
+            buttons.append(b1)
+            buttons.append(b2)
+        if len(question_dictionary.get(question_number)) == 5:
+            #creates 4 buttons from the button class
             b1 = button(20 * size, height - 330 * size, question_dictionary.get(question_number)[1])
             b2 = button(20 * size + button_distance, height - 330 * size, question_dictionary.get(question_number)[2])
             b3 = button(20 * size, height - 160 * size, question_dictionary.get(question_number)[3])
@@ -131,7 +143,7 @@ if __name__ == '__main__':
             buttons.append(b2)
             buttons.append(b3)
             buttons.append(b4)
-
+        b1.correct = True
 
 
 

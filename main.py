@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # imports
     import sys
-
+    import random
     import pygame
     from pygame.locals import *
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # screen setup
     width, height = 900 * size, 480 * size
     screen = pygame.display.set_mode((width, height))
-    font_size = round(40 * size)
+    font_size = round(30 * size)
 
     font = pygame.font.SysFont('Comic Sans MS', font_size) # font for the title
     font2 = pygame.font.SysFont('Comic Sans MS', round(30*size)) # font for the title
@@ -47,15 +47,18 @@ if __name__ == '__main__':
     # constants and colours
 
     # variables, dictionaries and lists
-    question = 3
-    question_dictionary = {1: ["what is 1+1", "2", "window", "11", "IDK", "2"], #question dictionary holds all the questions and answer
-                           2: ["5 + b = 12,  what is the value of b", "7", "2", "5", "what?", "7"],
-                           3: ["10 x 4 = 40", "True", "False", "True"],
+    question = 1
+    question_dictionary = {1: ["what is 1+1", "2", "window", "11", "IDK",], #question dictionary holds all the questions and answer
+                           2: ["5 + b = 12,  what is the value of b", "7", "2", "5", "what?"],
+                           3: ["there were 5 birds and 2 flew away how many birds would there be left", "3", "1000000000000000", "4", "whats a bird"],
                            4: ["10 x 4 = 40", "True", "False"],
-                           5: ["10 x 4 = 40", "True", "False"],
-                           6: ["10 x 4 = 40", "True", "False"],
+                           5: ["20 - 10 = 5", "False", "True"],
+                           6: ["3+8*3", "33", "27"],
                            7: ["10 x 4 = 40", "True", "False"],
-                           8: ["10 x 4 = 40", "True", "False"]
+                           8: ["10 x 4 = 40", "True", "False"],
+                           9: ["10 x 4 = 40", "True", "False"],
+                           10: ["10 x 4 = 40", "True", "False"],
+                           11: ["10 x 4 = 40", "True", "False"]
 
                            }
 
@@ -77,29 +80,74 @@ if __name__ == '__main__':
         def display(self):
             pygame.draw.rect(screen, self.colour, pygame.Rect(self.x, self.y, button_size_x, button_size_y)) #draws button onto the screen
 
-
             text = font2.render(self.text, False, (0, 0, 0)) #sets up text surface
             text_width = text.get_width()  # gets text width
             text_height = text.get_height()
-            screen.blit(text, (self.x+button_size_x/2-text_width/2, self.y+button_size_y/2-text_width/4)) #displays text surface perfectly centred using the text width
+            screen.blit(text, (self.x+button_size_x/2-text_width/2, self.y+button_size_y/2-text_height/2)) #displays text surface perfectly centred using the text width
 
     def check_mouse_inputs(x, y):
-
+        global question
         for button in buttons:
             if button.x+button_size_x > x and button.x < x and button.y+button_size_y > y and button.y < y: #clicking on the button
                 if button.correct: #if the button has the attribute "Correct = True" has been clicked then the user has inputted the right answer
                     #return True
-                    print("correct")
+                    question += 1
+                    randomise_question(question)
                 else:
                     #return False
                     print("wrong")
 
     def randomise_question(question):
-
-
-    def ask_question(background, question_number):
         global buttons
         buttons = []
+
+        if len(question_dictionary.get(question)) == 3:  #number of given answers = 2 (true/false question)
+            values = [1, 2]
+
+            choice = random.choice(values)
+            b1 = button(20*size, height-270*size, question_dictionary.get(question)[choice]) #button1
+            values.remove(choice)
+
+            choice = random.choice(values)
+            b2 = button(20*size+button_distance, height-270*size, question_dictionary.get(question)[choice]) #button2
+            values.remove(choice)
+
+            buttons.append(b1)
+            buttons.append(b2)
+        if len(question_dictionary.get(question)) == 5:
+            #creates 4 buttons from the button class
+            values = [1, 2, 3, 4]
+
+            choice = random.choice(values)
+            b1 = button(20 * size, height - 330 * size, question_dictionary.get(question)[choice])
+            values.remove(choice)
+
+            choice = random.choice(values)
+            b2 = button(20 * size + button_distance, height - 330 * size, question_dictionary.get(question)[choice])
+            values.remove(choice)
+
+            choice = random.choice(values)
+            b3 = button(20 * size, height - 160 * size, question_dictionary.get(question)[choice])
+            values.remove(choice)
+
+
+            choice = random.choice(values)
+            b4 = button(20 * size + button_distance, height - 160 * size, question_dictionary.get(question)[choice])
+            values.remove(choice)
+
+            buttons.append(b1)
+            buttons.append(b2)
+            buttons.append(b3)
+            buttons.append(b4)
+        for x in buttons:
+            if x.text == question_dictionary.get(question)[1]:
+                x.correct = True
+
+
+    randomise_question(question)
+    def ask_question(background, question_number):
+        global buttons
+
         # screen.blit(background)
         if background == "None":
             screen.fill((0, 0, 255))
@@ -115,35 +163,9 @@ if __name__ == '__main__':
         screen.blit(question_title, ((width / 2) - (text_width / 2), 40 * size)) #displays the question in the middle of the screen
 
         #render buttons
-        #print(len(question_dictionary.get(question_number)))
-        if len(question_dictionary.get(question_number)) == 4:  #number of given answers = 2 (true/false question)
+        for button in buttons:
+            button.display()
 
-            b1 = button(20*size, height-270*size, question_dictionary.get(question_number)[1]) #button1
-            b2 = button(20*size+button_distance, height-270*size, question_dictionary.get(question_number)[2]) #button2
-
-            #display buttons
-            b1.display()
-            b2.display()
-
-            buttons.append(b1)
-            buttons.append(b2)
-        if len(question_dictionary.get(question_number)) == 5:
-            #creates 4 buttons from the button class
-            b1 = button(20 * size, height - 330 * size, question_dictionary.get(question_number)[1])
-            b2 = button(20 * size + button_distance, height - 330 * size, question_dictionary.get(question_number)[2])
-            b3 = button(20 * size, height - 160 * size, question_dictionary.get(question_number)[3])
-            b4 = button(20 * size + button_distance, height - 160 * size, question_dictionary.get(question_number)[4])
-
-            b1.display()
-            b2.display()
-            b3.display()
-            b4.display()
-
-            buttons.append(b1)
-            buttons.append(b2)
-            buttons.append(b3)
-            buttons.append(b4)
-        b1.correct = True
 
 
 

@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # frames per second setup
     fps = 60
     fpsClock = pygame.time.Clock()
-    size = 1 # this variable scales all the screen sizes and buttons
+    size = 1.33 # this variable scales all the screen sizes and buttons
 
     # screen setup
     width, height = 900 * size, 480 * size
@@ -54,10 +54,10 @@ if __name__ == '__main__':
                            3: ["there were 5 birds, 2 flew away. how many birds are left?", "3", "1000000000", "4", "whats a bird"],
                            4: ["10 x 4 = 40", "True", "False"],
                            5: ["20 - 10 = 5", "False", "True"],
-                           6: ["3+8*3", "33", "27"],
-                           7: ["10 x 4 = 40", "True", "False"],
-                           8: ["10 x 4 = 40", "True", "False"],
-                           9: ["10 x 4 = 40", "True", "False"],
+                           6: ["3 + 8 x 3", "27", "33"],
+                           7: ["what is 8 x 8", "64", "16", "88", "42"],
+                           8: ["what is 12 ÷ 3", "4", "2", "3", "9"],
+                           9: ["Which polynomial has roots triple that of x^2 + 12x + 1 = 0", "x^2 + 36x + 9 = 0", "x^5 + 3x + 12 = 0", "x^2 + 24x + 8 = 0", "x^3 + 24x + 8 = 0"],
                            10: ["10 x 4 = 40", "True", "False"],
                            11: ["10 x 4 = 40", "True", "False"]
 
@@ -103,42 +103,26 @@ if __name__ == '__main__':
 
         if len(question_dictionary.get(question)) == 3:  #number of given answers = 2 (true/false question)
             values = [1, 2]
+            for x in range(2):
+                choice = random.choice(values)
+                buttons.append(button(20 * size+button_distance*x, height - 270 * size, question_dictionary.get(question)[choice]))   # button1
+                values.remove(choice)
 
-            choice = random.choice(values)
-            b1 = button(20*size, height-270*size, question_dictionary.get(question)[choice]) #button1
-            values.remove(choice)
 
-            choice = random.choice(values)
-            b2 = button(20*size+button_distance, height-270*size, question_dictionary.get(question)[choice]) #button2
-            values.remove(choice)
-
-            buttons.append(b1)
-            buttons.append(b2)
         if len(question_dictionary.get(question)) == 5:
             #creates 4 buttons from the button class
             values = [1, 2, 3, 4]
 
-            choice = random.choice(values)
-            b1 = button(20 * size, height - 330 * size, question_dictionary.get(question)[choice])
-            values.remove(choice)
+            for x in range(2):
+                choice = random.choice(values)
+                buttons.append(button(20 * size + button_distance*x, height - 330 * size, question_dictionary.get(question)[choice]))   # button1
+                values.remove(choice)
 
-            choice = random.choice(values)
-            b2 = button(20 * size + button_distance, height - 330 * size, question_dictionary.get(question)[choice])
-            values.remove(choice)
+            for x in range(2):
+                choice = random.choice(values)
+                buttons.append(button(20 * size + button_distance*x, height - 160 * size, question_dictionary.get(question)[choice]))
+                values.remove(choice)
 
-            choice = random.choice(values)
-            b3 = button(20 * size, height - 160 * size, question_dictionary.get(question)[choice])
-            values.remove(choice)
-
-
-            choice = random.choice(values)
-            b4 = button(20 * size + button_distance, height - 160 * size, question_dictionary.get(question)[choice])
-            values.remove(choice)
-
-            buttons.append(b1)
-            buttons.append(b2)
-            buttons.append(b3)
-            buttons.append(b4)
         for x in buttons:
             if x.text == question_dictionary.get(question)[1]:
                 x.correct = True
@@ -173,11 +157,9 @@ if __name__ == '__main__':
         screen.fill((0, 0, 0))
 
 
-
-        # Update.
         display_question("None", question)
 
-        # Draw.
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()

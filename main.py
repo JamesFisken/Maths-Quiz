@@ -23,6 +23,7 @@ if __name__ == '__main__':
     import sys
     import random
     import pygame
+    import time
     from pygame.locals import *
 
     pygame.init()  # starts pygame
@@ -50,7 +51,7 @@ if __name__ == '__main__':
     question = 1
     question_dictionary = {1: ["what is 1+1", "2", "window", "11", "IDK",], #question dictionary holds all the questions and answer
                            2: ["5 + b = 12,  what is the value of b", "7", "2", "5", "what?"],
-                           3: ["there were 5 birds and 2 flew away how many birds would there be left", "3", "1000000000000000", "4", "whats a bird"],
+                           3: ["there were 5 birds, 2 flew away. how many birds are left?", "3", "1000000000", "4", "whats a bird"],
                            4: ["10 x 4 = 40", "True", "False"],
                            5: ["20 - 10 = 5", "False", "True"],
                            6: ["3+8*3", "33", "27"],
@@ -67,19 +68,16 @@ if __name__ == '__main__':
 
     class button:
         def __init__(self, x, y, text):
-            self.clicked = False
-            self.correct = None
+
+            self.correct = False
             self.x = x
             self.y = y
             self.text = text
 
-            if self.clicked == True:
-                self.colour = (200, 200, 200)
-            else:
-                self.colour = (255, 255, 255)
-        def display(self):
-            pygame.draw.rect(screen, self.colour, pygame.Rect(self.x, self.y, button_size_x, button_size_y)) #draws button onto the screen
 
+        def display(self, colour):
+
+            pygame.draw.rect(screen, colour, pygame.Rect(self.x, self.y, button_size_x, button_size_y)) #draws button onto the screen
             text = font2.render(self.text, False, (0, 0, 0)) #sets up text surface
             text_width = text.get_width()  # gets text width
             text_height = text.get_height()
@@ -89,13 +87,15 @@ if __name__ == '__main__':
         global question
         for button in buttons:
             if button.x+button_size_x > x and button.x < x and button.y+button_size_y > y and button.y < y: #clicking on the button
-                if button.correct: #if the button has the attribute "Correct = True" has been clicked then the user has inputted the right answer
-                    #return True
-                    question += 1
-                    randomise_question(question)
-                else:
-                    #return False
-                    print("wrong")
+                if button.correct: #if the button has the attribute "Correct = True" has been clicked then the user has inputed the right answer
+                    button.display((0, 255, 0))
+                elif button.correct == False:
+                    button.display((255, 0, 0))
+
+                pygame.display.flip()
+                time.sleep(1)
+                question += 1
+                randomise_question(question)
 
     def randomise_question(question):
         global buttons
@@ -144,8 +144,8 @@ if __name__ == '__main__':
                 x.correct = True
 
 
-    randomise_question(question)
-    def ask_question(background, question_number):
+
+    def display_question(background, question_number):
         global buttons
 
         # screen.blit(background)
@@ -164,15 +164,20 @@ if __name__ == '__main__':
 
         #render buttons
         for button in buttons:
-            button.display()
+            button.display((255, 255, 255))
 
 
-
-
+    randomise_question(question)
     # Game loop.
     while True:
         screen.fill((0, 0, 0))
 
+
+
+        # Update.
+        display_question("None", question)
+
+        # Draw.
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -180,11 +185,6 @@ if __name__ == '__main__':
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
                 check_mouse_inputs(x, y)
-
-        # Update.
-        ask_question("None", question)
-
-        # Draw.
 
         pygame.display.flip()
         fpsClock.tick(fps)

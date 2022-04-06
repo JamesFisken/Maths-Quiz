@@ -30,7 +30,6 @@ if __name__ == '__main__':
     size = 1 # this variable scales all the screen sizes and buttons
     # screen setup
 
-    print("score is 41 %")
     def init():
 
         global width, height, screen, font_size, font, font2, button_size_x, button_size_y, button_distance
@@ -62,13 +61,13 @@ if __name__ == '__main__':
                            8: ["what is 12 ÷ 3", "4", "2", "3", "9"],
                            9: ["9 x 9", "81", "36", "72", "18"],
                            10: ["a square has a width of 5, what is the area of the square", "25", "not enough infomation", "5", "20"],
-                           11: ["10 x 4 = 40", "True", "False"],
-                           12: ["10 x 4 = 40", "True", "False"],
-                           13: ["10 x 4 = 40", "True", "False"],
-                           14: ["10 x 4 = 40", "True", "False"],
-                           15: ["10 x 4 = 40", "True", "False"],
-                           16: ["10 x 4 = 40", "True", "False"],
-                           17: ["10 x 4 = 40", "True", "False"],
+                           11: ["8-4*8", "-24", "24"],
+                           12: ["9 x 6 = 54", "True", "False"],
+                           13: ["16 / 4", "4", "3", "2", "8"],
+                           14: ["8+8+8+8+8", "40", "32", "48", "8"],
+                           15: ["what is 12 x 8", "96", "48", "112", "92"],
+                           16: ["20 x 20", "400", "4400", "40", "440"],
+                           17: ["what is 9 x 5 x 2?", "90", "952"],
                            18: ["You scored      %,", "True", "False"]
 
 
@@ -229,7 +228,6 @@ if __name__ == '__main__':
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_EQUALS or event.key == pygame.K_MINUS:
                     if event.key == pygame.K_EQUALS and size < 3:
-
                         size += 0.1
                     if event.key == pygame.K_MINUS and size > 0.2:
                         size -= 0.1

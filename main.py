@@ -56,8 +56,7 @@ if __name__ == '__main__':
 
                            }
 
-
-    class button:
+    class Button: #creates class for the buttons
         def __init__(self, x, y, text):
 
             self.correct = False
@@ -79,8 +78,8 @@ if __name__ == '__main__':
         else:
             score_text = font.render(score, False, (255, 0, 0)) #text is gonna be red (fail)
         display_question("None", question) #just displays an empty question
-        screen.blit(score_text, (485*size, 40*size))
-        pygame.display.update()
+        screen.blit(score_text, (485*size, 50*size))
+        pygame.display.update() #updates the screen to display the changes
 
         time.sleep(4) #adds some display before stopping the quiz
 
@@ -125,7 +124,7 @@ if __name__ == '__main__':
                 values = [1, 2]
                 for x in range(2): #loops 2 times
                     choice = random.choice(values)
-                    buttons.append(button(20 * size+button_distance*x, height - 270 * size, question_dictionary.get(question)[choice]))   # button
+                    buttons.append(Button(20 * size+button_distance*x, height - 270 * size, question_dictionary.get(question)[choice]))   # button
                     values.remove(choice)
 
 
@@ -135,12 +134,12 @@ if __name__ == '__main__':
 
                 for x in range(2): #loops 2 times
                     choice = random.choice(values)
-                    buttons.append(button(20 * size + button_distance*x, height - 338 * size, question_dictionary.get(question)[choice]))   # button
+                    buttons.append(Button(20 * size + button_distance*x, height - 338 * size, question_dictionary.get(question)[choice]))   # button
                     values.remove(choice)
 
                 for x in range(2): #loops 2 times
                     choice = random.choice(values)
-                    buttons.append(button(20 * size + button_distance*x, height - 168 * size, question_dictionary.get(question)[choice]))  #button
+                    buttons.append(Button(20 * size + button_distance*x, height - 168 * size, question_dictionary.get(question)[choice]))  #button
                     values.remove(choice)
 
             for x in buttons:
@@ -195,16 +194,16 @@ if __name__ == '__main__':
     # Game loop.
     while True:
 
-        display_question("None", question)
+        display_question("None", question) #displays the screen at the relevant question number
 
 
         for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                check_mouse_inputs(x, y)
+            if event.type == QUIT: #if the red X is clicked
+                pygame.quit() #close pygame
+                sys.exit() #close program
+            if event.type == pygame.MOUSEBUTTONDOWN: # if mouse down
+                x, y = pygame.mouse.get_pos() #gets the mouse coords
+                check_mouse_inputs(x, y) #passes these coords into a function
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_EQUALS or event.key == pygame.K_MINUS:
                     if event.key == pygame.K_EQUALS and size < 3:
